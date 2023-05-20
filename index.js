@@ -2,7 +2,7 @@ const express = require('express');
 const generateOtp = require('./controllers/generateOtp');
 const login = require('./controllers/login');
 const  {loginRateLimiter} = require('./middleware/index')
-const port = 8000;
+const port = process.env.PORT || 8000;
 const app = express();
 
 app.use(
