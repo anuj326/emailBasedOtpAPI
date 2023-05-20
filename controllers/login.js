@@ -1,7 +1,8 @@
 const otp = require('./generateOtp')
-const rateLimit = require('express-rate-limit');
+var jwt = require('jsonwebtoken');
 
 const login = function(req , res){
+
     console.log("OTP entered by user",req.body)
     console.log("system gen otp",otp.otp)
 
@@ -20,14 +21,26 @@ const login = function(req , res){
        var currentTime = DateFormat(now);
        console.log(currentTime);
 
-    // const date = new Date();
-    // const currentMin = date.getMinutes()
-    // console.log("curent min",currentMin)
-    // const validMin = otp.min + 5;
-    // console.log("expire time is ",validMin)
     if(otp.expireTime > currentTime){
+
+        const user = {
+            id:1,
+            email: otp.email
+          }
         if(req.body.otp === otp.otp){
-            res.send("Logged in Successfully")
+            jwt.sign(user, 'secretkey', {expiresIn: '60s'}, function(err, token) {
+                if(err){
+                  res.statusCode(403)
+                }
+                else{
+                    console.log("token",token)
+                    
+                  res.json({
+                    token
+                  })
+                }
+              });
+            
         }else{
     
             res.send("Invalid otp")
@@ -42,15 +55,5 @@ const login = function(req , res){
 
 }
 
-
-
-const loginRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 min in milliseconds
-  max: 5,
-  message: `Login error, you have reached maximum retries. Please try again after 30 minutes`, 
-  statusCode: 429,
-  Headers: true,
-});
-module.exports = { loginRateLimiter }
 
 module.exports = login;
