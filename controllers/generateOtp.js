@@ -45,9 +45,9 @@ const generateOtp = async function(req , res){
     let testAccount = await nodemailer.createTestAccount();
 
     //sender email
-    var senderEmail = 'testmail2416@gmail.com'
+    var senderEmail = 'your email'
     //sender email password
-    var userPassword = 'yvjeabbpxwugaokt'
+    var userPassword = 'your password'
 
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
