@@ -10,7 +10,7 @@ app.use(
   );
 app.use(loginRateLimiter)
 
-app.get('/',function(req , res){
+app.get('/home',function(req , res){
     res.send("Welcome to home page");
 })
 
